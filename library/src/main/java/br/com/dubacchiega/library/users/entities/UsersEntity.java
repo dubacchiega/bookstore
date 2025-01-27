@@ -1,12 +1,13 @@
-package br.com.dubacchiega.library.entities.users;
+package br.com.dubacchiega.library.users.entities;
 
-import br.com.dubacchiega.library.entities.books.BooksEntity;
+import br.com.dubacchiega.library.books.entities.BooksEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,9 +16,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "users")
+@Entity(name = "register_users")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UsersEntity {
 
     @Id
@@ -47,5 +49,12 @@ public class UsersEntity {
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "books_id"))
     private Set<BooksEntity> books = new HashSet<>();
+
+    public UsersEntity(UserRequestDTO user){
+        this.name = user.name();
+        this.username = user.username();
+        this.email = user.email();
+        this.password = user.password();
+    }
 
 }

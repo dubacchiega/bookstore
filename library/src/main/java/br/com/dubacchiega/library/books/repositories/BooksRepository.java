@@ -1,6 +1,6 @@
-package br.com.dubacchiega.library.repositories;
+package br.com.dubacchiega.library.books.repositories;
 
-import br.com.dubacchiega.library.entities.books.BooksEntity;
+import br.com.dubacchiega.library.books.entities.BooksEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BooksRepository extends JpaRepository<BooksEntity, Long> {

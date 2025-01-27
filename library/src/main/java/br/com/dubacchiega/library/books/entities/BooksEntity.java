@@ -1,6 +1,6 @@
-package br.com.dubacchiega.library.entities.books;
+package br.com.dubacchiega.library.books.entities;
 
-import br.com.dubacchiega.library.entities.users.UsersEntity;
+import br.com.dubacchiega.library.users.entities.UsersEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
