@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,14 @@ import java.util.UUID;
 @Entity(name = "books")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class BooksEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "O campo [tittle] deve conter um título")
+    @NotBlank(message = "O campo [title] deve conter um título")
     private String title;
 
     @NotBlank(message = "O campo [author] deve conter um autor")
@@ -40,5 +42,11 @@ public class BooksEntity {
     // assim eu evito que crie outro campo a mais.
     public Boolean getAvailable() {
         return this.stock != null && this.stock > 0;
+    }
+
+    public BooksEntity(BooksRequestDTO book){
+        this.title = book.title();
+        this.author = book.author();
+        this.stock = book.stock();
     }
 }

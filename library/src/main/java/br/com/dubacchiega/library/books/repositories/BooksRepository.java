@@ -3,5 +3,10 @@ package br.com.dubacchiega.library.books.repositories;
 import br.com.dubacchiega.library.books.entities.BooksEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BooksRepository extends JpaRepository<BooksEntity, Long> {
+import java.util.Optional;
+import java.util.UUID;
+
+public interface BooksRepository extends JpaRepository<BooksEntity, UUID> {
+
+    Optional<BooksEntity> findByTitle(String tittle);
 }
