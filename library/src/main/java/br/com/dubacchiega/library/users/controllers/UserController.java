@@ -5,6 +5,7 @@ import br.com.dubacchiega.library.users.entities.UserRequestDTO;
 import br.com.dubacchiega.library.users.entities.UserResponseDTO;
 import br.com.dubacchiega.library.users.services.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class UserController {
             UserResponseDTO userResponseDTO = userRegistrationService.userRegistration(userRequestDTO);
             return ResponseEntity.ok().body(userResponseDTO);
         }catch (UserException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

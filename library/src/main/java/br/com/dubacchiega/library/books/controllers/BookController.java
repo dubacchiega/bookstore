@@ -5,6 +5,7 @@ import br.com.dubacchiega.library.books.entities.BooksRequestDTO;
 import br.com.dubacchiega.library.books.services.BookRegistrationService;
 import br.com.dubacchiega.library.exceptions.BookException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class BookController {
             BooksEntity book = bookRegistrationService.register(booksRequestDTO);
             return ResponseEntity.ok().body(book);
         }catch (BookException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
