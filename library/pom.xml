@@ -45,6 +45,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+			<version>9.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,10 +87,10 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>10.20.1</version>
+				<version>9.8.0</version>
 				<configuration>
-					<url>jdbc:h2:file:./data/CadastroDeNinjasDB</url>
-					<user>cadastro_db</user>
+					<url>jdbc:postgresql://localhost:5432/bookstore</url>
+					<user>postgres</user>
 					<password>1234</password>
 				</configuration>
 			</plugin>
