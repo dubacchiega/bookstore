@@ -1,6 +1,8 @@
 package br.com.dubacchiega.library.books.entities;
 
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestDTO;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,9 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity(name = "books")
 @Data
@@ -35,7 +35,8 @@ public class BooksEntity {
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "books")
-    private Set<UsersEntity> users = new HashSet<>();
+    @JsonIgnore
+    private List<UsersEntity> users = new ArrayList<>();
 
     @Transient // Indica que este campo não será persistido no banco de dados
     // como estoque a disponibilidade é variada de stock, então eu crio um método que retorna true se o estoque for diferente de null e maior que 0, e falso caso contrário.
