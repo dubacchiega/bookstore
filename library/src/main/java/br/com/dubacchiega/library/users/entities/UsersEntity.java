@@ -1,6 +1,7 @@
 package br.com.dubacchiega.library.users.entities;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
+import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRequestDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,9 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity(name = "register_users")
 @Data
@@ -43,18 +42,22 @@ public class UsersEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "rented_books",
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "books_id"))
-    private Set<BooksEntity> books = new HashSet<>();
+    private List<BooksEntity> books = new ArrayList<>();
 
     public UsersEntity(UserRequestDTO user){
         this.name = user.name();
         this.username = user.username();
         this.email = user.email();
         this.password = user.password();
+    }
+
+    public void setBooks(BooksEntity booksEntity){
+        books.add(booksEntity);
     }
 
 }
