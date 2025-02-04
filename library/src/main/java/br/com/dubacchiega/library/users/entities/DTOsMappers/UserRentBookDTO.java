@@ -1,4 +1,4 @@
-package br.com.dubacchiega.library.users.entities;
+package br.com.dubacchiega.library.users.entities.DTOsMappers;
 
 import br.com.dubacchiega.library.books.entities.DTOsMappers.RentBookResponseDTO;
 
