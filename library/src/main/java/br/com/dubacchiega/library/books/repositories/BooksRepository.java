@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface BooksRepository extends JpaRepository<BooksEntity, UUID> {
 
-    Optional<BooksEntity> findByTitle(String tittle);
+    Optional<BooksEntity> findByTitle(String title);
 }
