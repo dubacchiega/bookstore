@@ -1,22 +1,29 @@
 package br.com.dubacchiega.library.books.services;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
-import br.com.dubacchiega.library.books.entities.BooksRequestDTO;
-import br.com.dubacchiega.library.books.entities.BooksResponseDTO;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestDTO;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestMapper;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksResponseDTO;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksResponseMapper;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
 import br.com.dubacchiega.library.exceptions.BookException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookRegistrationService {
 
     @Autowired
     private BooksRepository booksRepository;
+
+    @Autowired
+    private BooksRequestMapper booksRequestMapper;
+
+    @Autowired
+    private BooksResponseMapper booksResponseMapper;
 
     public BooksResponseDTO register(BooksRequestDTO booksRequestDTO){
         booksRepository.findByTitle(booksRequestDTO.title()).ifPresent(
@@ -25,8 +32,9 @@ public class BookRegistrationService {
                 }
         );
 
-        BooksEntity booksEntity = booksRepository.save(new BooksEntity(booksRequestDTO));
-        BooksResponseDTO booksResponseDTO = new BooksResponseDTO(booksEntity.getTitle(), booksEntity.getAuthor(), booksEntity.getStock(), booksEntity.getAvailable());
+        BooksEntity booksEntity = booksRequestMapper.toEntity(booksRequestDTO);
+        booksRepository.save(booksEntity);
+        BooksResponseDTO booksResponseDTO = booksResponseMapper.toDTO(booksEntity);
         return booksResponseDTO;
     }
 
@@ -35,28 +43,16 @@ public class BookRegistrationService {
         if(books.isEmpty()){
             throw new BookException("No books registered");
         }else {
-            List<BooksResponseDTO> booksResponse = new ArrayList<>();
-            for (BooksEntity book : books){
-                BooksResponseDTO bookResp = new BooksResponseDTO(
-                        book.getTitle(),
-                        book.getAuthor(),
-                        book.getStock(),
-                        book.getAvailable()
-                );
-                booksResponse.add(bookResp);
-            }
-            return booksResponse;
+            return books.stream()
+                    .map(booksResponseMapper::toDTO)
+                    .collect(Collectors.toList());
         }
     }
 
     public List<BooksResponseDTO> listAvailableBooks(){
         List<BooksResponseDTO> allbooks = listAllBooks();
-        List<BooksResponseDTO> availableBooks = new ArrayList<>();
-        for (BooksResponseDTO book : allbooks){
-            if (book.available()){
-                availableBooks.add(book);
-            }
-        }
-        return availableBooks;
+        return allbooks.stream()
+                .filter(BooksResponseDTO::available)
+                .collect(Collectors.toList());
     }
 }

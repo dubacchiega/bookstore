@@ -1,8 +1,7 @@
 package br.com.dubacchiega.library.books.controllers;
 
-import br.com.dubacchiega.library.books.entities.BooksEntity;
-import br.com.dubacchiega.library.books.entities.BooksRequestDTO;
-import br.com.dubacchiega.library.books.entities.BooksResponseDTO;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestDTO;
+import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksResponseDTO;
 import br.com.dubacchiega.library.books.services.BookRegistrationService;
 import br.com.dubacchiega.library.exceptions.BookException;
 

@@ -1,8 +1,10 @@
 package br.com.dubacchiega.library.users.services;
 
 import br.com.dubacchiega.library.exceptions.UserException;
-import br.com.dubacchiega.library.users.entities.UserRequestDTO;
-import br.com.dubacchiega.library.users.entities.UserResponseDTO;
+import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRequestDTO;
+import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRequestMapper;
+import br.com.dubacchiega.library.users.entities.DTOsMappers.UserResponseDTO;
+import br.com.dubacchiega.library.users.entities.DTOsMappers.UserResponseMapper;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
 import br.com.dubacchiega.library.users.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,20 @@ public class UserRegistrationService {
     @Autowired
     UsersRepository usersRepository;
 
-    public UserResponseDTO userRegistration(UserRequestDTO user){
-        usersRepository.findByEmail(user.email()).ifPresent(
+    @Autowired
+    UserRequestMapper userRequestMapper;
+
+    @Autowired
+    UserResponseMapper userResponseMapper;
+
+    public UserResponseDTO userRegistration(UserRequestDTO userRequestDTO){
+        usersRepository.findByEmail(userRequestDTO.email()).ifPresent(
                 usersEntity -> {
                     throw new UserException("Existing user!");
                 }
         );
-        UsersEntity newUser = usersRepository.save(new UsersEntity(user));
-        return UserResponseDTO.builder()
-                .name(newUser.getName())
-                .username(newUser.getUsername())
-                .email(newUser.getEmail())
-                .createdAt(newUser.getCreatedAt())
-                .build();
+        UsersEntity newUser = userRequestMapper.toEntity(userRequestDTO);
+        usersRepository.save(newUser);
+        return userResponseMapper.toDTO(newUser);
     }
 }
