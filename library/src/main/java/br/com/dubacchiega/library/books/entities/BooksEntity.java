@@ -1,6 +1,6 @@
 package br.com.dubacchiega.library.books.entities;
 
-import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestDTO;
+import br.com.dubacchiega.library.books.entities.DTO.BooksRequestDTO;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

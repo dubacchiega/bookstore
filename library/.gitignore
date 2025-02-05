@@ -33,5 +33,4 @@ build/
 .vscode/
 
 .env
-/target
-C:\Users\dubac\Downloads\library\library\target
+/target/

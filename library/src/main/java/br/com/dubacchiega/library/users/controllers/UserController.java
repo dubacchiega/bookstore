@@ -1,10 +1,10 @@
 package br.com.dubacchiega.library.users.controllers;
 
-import br.com.dubacchiega.library.books.entities.DTOsMappers.RentBookDTO;
+import br.com.dubacchiega.library.books.entities.DTO.RentBookDTO;
 import br.com.dubacchiega.library.exceptions.UserException;
-import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRentBookDTO;
-import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRequestDTO;
-import br.com.dubacchiega.library.users.entities.DTOsMappers.UserResponseDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserRequestDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserResponseDTO;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
 import br.com.dubacchiega.library.users.services.ListUserBook;
 import br.com.dubacchiega.library.users.services.RentBookService;
