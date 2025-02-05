@@ -1,6 +1,5 @@
-package br.com.dubacchiega.library.users.entities.DTOsMappers;
+package br.com.dubacchiega.library.users.entities.Mappers;
 
-import br.com.dubacchiega.library.users.entities.UsersEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -1,7 +1,7 @@
 package br.com.dubacchiega.library.users.entities;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
-import br.com.dubacchiega.library.users.entities.DTOsMappers.UserRequestDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserRequestDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

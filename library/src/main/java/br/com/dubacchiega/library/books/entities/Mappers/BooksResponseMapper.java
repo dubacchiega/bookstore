@@ -1,6 +1,7 @@
-package br.com.dubacchiega.library.books.entities.DTOsMappers;
+package br.com.dubacchiega.library.books.entities.Mappers;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
+import br.com.dubacchiega.library.books.entities.DTO.BooksResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

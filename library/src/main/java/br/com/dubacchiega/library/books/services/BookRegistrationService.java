@@ -1,10 +1,10 @@
 package br.com.dubacchiega.library.books.services;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
-import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestDTO;
-import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksRequestMapper;
-import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksResponseDTO;
-import br.com.dubacchiega.library.books.entities.DTOsMappers.BooksResponseMapper;
+import br.com.dubacchiega.library.books.entities.DTO.BooksRequestDTO;
+import br.com.dubacchiega.library.books.entities.Mappers.BooksRequestMapper;
+import br.com.dubacchiega.library.books.entities.DTO.BooksResponseDTO;
+import br.com.dubacchiega.library.books.entities.Mappers.BooksResponseMapper;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
 import br.com.dubacchiega.library.exceptions.BookException;
 import org.springframework.beans.factory.annotation.Autowired;

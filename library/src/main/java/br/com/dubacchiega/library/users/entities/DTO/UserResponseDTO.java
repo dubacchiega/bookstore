@@ -1,4 +1,4 @@
-package br.com.dubacchiega.library.users.entities.DTOsMappers;
+package br.com.dubacchiega.library.users.entities.DTO;
 
 import lombok.Builder;
 
