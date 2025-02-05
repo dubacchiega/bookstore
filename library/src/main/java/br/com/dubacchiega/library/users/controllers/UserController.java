@@ -3,10 +3,11 @@ package br.com.dubacchiega.library.users.controllers;
 import br.com.dubacchiega.library.books.entities.DTO.RentBookDTO;
 import br.com.dubacchiega.library.exceptions.UserException;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserRentBookResponseDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRequestDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserResponseDTO;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
-import br.com.dubacchiega.library.users.services.ListUserBook;
+import br.com.dubacchiega.library.users.services.ListUserBookService;
 import br.com.dubacchiega.library.users.services.RentBookService;
 import br.com.dubacchiega.library.users.services.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class UserController {
     RentBookService rentBookService;
 
     @Autowired
-    ListUserBook listUserBook;
+    ListUserBookService listUserBookService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> registration(@RequestBody UserRequestDTO userRequestDTO){
@@ -54,8 +55,8 @@ public class UserController {
     @GetMapping("/user/listBook/{id}")
     public ResponseEntity<Object> listUserBook(@PathVariable UUID id){
         try {
-            UsersEntity usersEntity = listUserBook.listUserBook(id);
-            return ResponseEntity.ok().body(usersEntity);
+            UserRentBookResponseDTO userRentBookResponseDTO = listUserBookService.listUserBook(id);
+            return ResponseEntity.ok().body(userRentBookResponseDTO);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
