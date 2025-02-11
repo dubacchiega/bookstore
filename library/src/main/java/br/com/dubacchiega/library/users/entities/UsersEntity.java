@@ -42,6 +42,8 @@ public class UsersEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    private Integer rented_more = 0;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "rented_books",

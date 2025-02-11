@@ -11,6 +11,8 @@ import br.com.dubacchiega.library.exceptions.UserBookException;
 import br.com.dubacchiega.library.exceptions.UserException;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookResponseDTO;
+import br.com.dubacchiega.library.users.entities.DTO.UserRentedMoreResponseDTO;
+import br.com.dubacchiega.library.users.entities.Mappers.UserRentedMoreResponseMapper;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
 import br.com.dubacchiega.library.users.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class RentBookService {
     @Autowired
     BookRentedByUserMapper bookRentedByUserMapper;
 
+    @Autowired
+    UserRentedMoreResponseMapper userRentedMoreResponseMapper;
+
     public UserRentBookDTO rentBook(UUID userId, RentBookDTO bookDTO){
 
 
@@ -42,8 +47,16 @@ public class RentBookService {
         BooksEntity book = booksRepository.findByTitle(bookDTO.title()).orElseThrow(
                 () -> {throw new BookException("Book not found");});
 
+        if (usersRepository.existsByIdAndBooksId(user.getId(), book.getId())){
+            throw new UserBookException("Book already rented by this user");
+        }
+
         if (book.getAvailable() && book.getStock() > 0){
             user.addBooks(book);
+            if (user.getRented_more() == null){
+                user.setRented_more(0);
+            }
+            user.setRented_more(user.getRented_more() + 1);
 
             book.setStock(book.getStock() - 1);
 
@@ -89,5 +102,25 @@ public class RentBookService {
                 .collect(Collectors.toList());
 
         return new UserRentBookResponseDTO(user.getName(), user.getUsername(), user.getEmail(), bookRentedByUserDTO);
+    }
+
+    public List<UserRentedMoreResponseDTO> userRentedMostBook(){
+
+        List<UsersEntity> users = usersRepository.findAll();
+        int rentedMax = users.stream()
+                .map(UsersEntity::getRented_more)
+                .max((u1, u2) -> u1.compareTo(u2))
+                .orElseThrow(() -> new UserException("At the moment, no users have rented books"));
+
+        List<UsersEntity> usersRentedMax = users.stream()
+                .filter(u -> u.getRented_more() == rentedMax)
+                .collect(Collectors.toList());
+
+        List<UserRentedMoreResponseDTO> userRentedMoreResponseDTOS = usersRentedMax.stream()
+                .map(userRentedMoreResponseMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return userRentedMoreResponseDTOS;
+
     }
 }

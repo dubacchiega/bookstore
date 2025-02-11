@@ -1,0 +1,1 @@
+ALTER TABLE register_users ADD COLUMN rented_more INT
