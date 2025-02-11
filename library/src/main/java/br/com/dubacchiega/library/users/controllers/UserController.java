@@ -1,6 +1,8 @@
 package br.com.dubacchiega.library.users.controllers;
 
 import br.com.dubacchiega.library.books.entities.DTO.RentBookDTO;
+import br.com.dubacchiega.library.exceptions.BookException;
+import br.com.dubacchiega.library.exceptions.UserBookException;
 import br.com.dubacchiega.library.exceptions.UserException;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookResponseDTO;
@@ -47,17 +49,35 @@ public class UserController {
         try {
             UserRentBookDTO userRentBookDTO = rentBookService.rentBook(id, rentBookDTO);
             return ResponseEntity.ok().body(userRentBookDTO);
-        }catch (Exception e){
+        }catch (BookException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (UserException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (UserBookException e){
             return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    }
     }
 
-    @GetMapping("/user/listBook/{id}")
+    @GetMapping("/listBook/{id}")
     public ResponseEntity<Object> listUserBook(@PathVariable UUID id){
         try {
             UserRentBookResponseDTO userRentBookResponseDTO = listUserBookService.listUserBook(id);
             return ResponseEntity.ok().body(userRentBookResponseDTO);
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/return/{id}")
+    public ResponseEntity<Object> returnBooks(@PathVariable UUID id, @RequestBody RentBookDTO rentBookDTO){
+        try {
+            UserRentBookResponseDTO userRentBookResponseDTO = rentBookService.returnBook(id, rentBookDTO);
+            return ResponseEntity.ok().body(userRentBookResponseDTO);
+        }catch (BookException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (UserException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (UserBookException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

@@ -56,7 +56,7 @@ public class UsersEntity {
         this.password = user.password();
     }
 
-    public void setBooks(BooksEntity booksEntity){
+    public void addBooks(BooksEntity booksEntity){
         books.add(booksEntity);
     }
 
