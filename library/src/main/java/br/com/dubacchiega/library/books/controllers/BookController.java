@@ -2,6 +2,8 @@ package br.com.dubacchiega.library.books.controllers;
 
 import br.com.dubacchiega.library.books.entities.DTO.BooksRequestDTO;
 import br.com.dubacchiega.library.books.entities.DTO.BooksResponseDTO;
+import br.com.dubacchiega.library.books.entities.DTO.RankBooksDTO;
+import br.com.dubacchiega.library.books.services.BookRankService;
 import br.com.dubacchiega.library.books.services.BookRegistrationService;
 import br.com.dubacchiega.library.exceptions.BookException;
 
@@ -19,8 +21,11 @@ public class BookController {
     @Autowired
     BookRegistrationService bookRegistrationService;
 
+    @Autowired
+    BookRankService bookRankService;
+
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody BooksRequestDTO booksRequestDTO){
+    public ResponseEntity<?> register(@RequestBody BooksRequestDTO booksRequestDTO){
         try{
             BooksResponseDTO book = bookRegistrationService.register(booksRequestDTO);
             return ResponseEntity.ok().body(book);
@@ -32,7 +37,7 @@ public class BookController {
     }
 
     @GetMapping("/list/all")
-    public ResponseEntity<Object> listAllBooks(){
+    public ResponseEntity<?> listAllBooks(){
         try {
             List<BooksResponseDTO> booksResponseDTOList = bookRegistrationService.listAllBooks();
             return ResponseEntity.ok().body(booksResponseDTOList);
@@ -42,10 +47,22 @@ public class BookController {
     }
 
     @GetMapping("/list/available")
-    public ResponseEntity<Object> listAvailableBooks(){
+    public ResponseEntity<?> listAvailableBooks(){
         try {
             List<BooksResponseDTO> booksResponseDTOList = bookRegistrationService.listAvailableBooks();
             return ResponseEntity.ok().body(booksResponseDTOList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/list/rank")
+    public ResponseEntity<?> listMostRentedRank(){
+        try {
+            List<RankBooksDTO> rankBooksDTOS = bookRankService.bookRank();
+            return ResponseEntity.ok().body(rankBooksDTOS);
+        }catch (BookException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

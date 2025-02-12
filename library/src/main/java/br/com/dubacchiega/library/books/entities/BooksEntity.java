@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,7 @@ public class BooksEntity {
 
     @ManyToMany(mappedBy = "books")
     @JsonIgnore
+    @ToString.Exclude
     private List<UsersEntity> users = new ArrayList<>();
 
     @Transient // Indica que este campo não será persistido no banco de dados
@@ -44,6 +46,10 @@ public class BooksEntity {
     public Boolean getAvailable() {
         return this.stock != null && this.stock > 0;
     }
+
+    @Column(name = "most_rented_rank")
+    private Integer mostRentedRank = 0;
+
 
     public BooksEntity(BooksRequestDTO book){
         this.title = book.title();

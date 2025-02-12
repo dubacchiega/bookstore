@@ -1,0 +1,1 @@
+ALTER TABLE books ADD COLUMN most_rented_rank INT

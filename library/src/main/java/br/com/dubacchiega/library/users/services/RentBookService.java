@@ -53,10 +53,12 @@ public class RentBookService {
 
         if (book.getAvailable() && book.getStock() > 0){
             user.addBooks(book);
-            if (user.getRented_more() == null){
+            if (user.getRented_more() == null || book.getMostRentedRank() == null){
                 user.setRented_more(0);
+                book.setMostRentedRank(0);
             }
             user.setRented_more(user.getRented_more() + 1);
+            book.setMostRentedRank(book.getMostRentedRank() + 1);
 
             book.setStock(book.getStock() - 1);
 
