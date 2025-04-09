@@ -3,7 +3,7 @@ package br.com.dubacchiega.library.books.services;
 import br.com.dubacchiega.library.books.entities.BooksEntity;
 import br.com.dubacchiega.library.books.entities.DTO.RankBooksDTO;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
-import br.com.dubacchiega.library.exceptions.BookException;
+import br.com.dubacchiega.library.exceptions.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class BookRankService {
 
         List<BooksEntity> books = booksRepository.findAll();
         if (books.isEmpty()){
-            throw new BookException("No books in the rank");
+            throw new BookNotFoundException("No books in the rank");
         }
         ArrayList<BooksEntity> booksToOrder = new ArrayList<>(books);
 

@@ -6,16 +6,14 @@ import br.com.dubacchiega.library.books.entities.DTO.RentBookDTO;
 import br.com.dubacchiega.library.books.entities.DTO.RentBookResponseDTO;
 import br.com.dubacchiega.library.books.entities.Mappers.BookRentedByUserMapper;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
-import br.com.dubacchiega.library.exceptions.BookException;
-import br.com.dubacchiega.library.exceptions.UserBookException;
-import br.com.dubacchiega.library.exceptions.UserException;
+import br.com.dubacchiega.library.exceptions.*;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookResponseDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentedMoreResponseDTO;
 import br.com.dubacchiega.library.users.entities.Mappers.UserRentedMoreResponseMapper;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
 import br.com.dubacchiega.library.users.repositories.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,28 +22,22 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RentBookService {
 
-    @Autowired
-    UsersRepository usersRepository;
-
-    @Autowired
-    BooksRepository booksRepository;
-
-    @Autowired
-    BookRentedByUserMapper bookRentedByUserMapper;
-
-    @Autowired
-    UserRentedMoreResponseMapper userRentedMoreResponseMapper;
+    private final UsersRepository usersRepository;
+    private final BooksRepository booksRepository;
+    private final BookRentedByUserMapper bookRentedByUserMapper;
+    private final UserRentedMoreResponseMapper userRentedMoreResponseMapper;
 
     public UserRentBookDTO rentBook(UUID userId, RentBookDTO bookDTO){
 
 
         UsersEntity user = usersRepository.findById(userId).orElseThrow(
-                () -> {throw new UserException("User not found");});
+                () -> {throw new UserNotFoundException("User not found");});
 
         BooksEntity book = booksRepository.findByTitle(bookDTO.title()).orElseThrow(
-                () -> {throw new BookException("Book not found");});
+                () -> {throw new BookNotFoundException("Book not found");});
 
         if (usersRepository.existsByIdAndBooksId(user.getId(), book.getId())){
             throw new UserBookException("Book already rented by this user");
@@ -70,17 +62,17 @@ public class RentBookService {
             UserRentBookDTO userRentBookDTO = new UserRentBookDTO(user.getName(), user.getUsername(), user.getEmail(), booksResponseDTO);
             return userRentBookDTO;
         }else {
-            throw new BookException("Book unavailable");
+            throw new BookUnavailableException("Book unavailable");
         }
 
     }
 
     public UserRentBookResponseDTO returnBook(UUID userId, RentBookDTO title){
         UsersEntity user = usersRepository.findById(userId).orElseThrow(
-                () -> {throw new UserException("User not found");});
+                () -> {throw new UserNotFoundException("User not found");});
 
         BooksEntity book = booksRepository.findByTitle(title.title()).orElseThrow(
-                () -> {throw new BookException("Book not found");});
+                () -> {throw new BookNotFoundException("Book not found");});
 
         List<BooksEntity> userBooks = new ArrayList<>(user.getBooks());
         if (userBooks.isEmpty()){
@@ -90,7 +82,7 @@ public class RentBookService {
         boolean removed = userBooks.removeIf(b -> b.getTitle().equals(title.title()));
 
         if (!removed) {
-            throw new UserBookException("Book not found in user's rented list");
+            throw new BookNotFoundException("Book not found in user's rented list");
         }
 
         user.setBooks(new ArrayList<>(userBooks));
@@ -112,7 +104,7 @@ public class RentBookService {
         int rentedMax = users.stream()
                 .map(UsersEntity::getRented_more)
                 .max((u1, u2) -> u1.compareTo(u2))
-                .orElseThrow(() -> new UserException("At the moment, no users have rented books"));
+                .orElseThrow(() -> new BookException("At the moment, no users have rented books"));
 
         List<UsersEntity> usersRentedMax = users.stream()
                 .filter(u -> u.getRented_more() == rentedMax)

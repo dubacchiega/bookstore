@@ -6,7 +6,7 @@ import br.com.dubacchiega.library.books.entities.Mappers.BooksRequestMapper;
 import br.com.dubacchiega.library.books.entities.DTO.BooksResponseDTO;
 import br.com.dubacchiega.library.books.entities.Mappers.BooksResponseMapper;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
-import br.com.dubacchiega.library.exceptions.BookException;
+import br.com.dubacchiega.library.exceptions.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class BookRegistrationService {
     public BooksResponseDTO register(BooksRequestDTO booksRequestDTO){
         booksRepository.findByTitle(booksRequestDTO.title()).ifPresent(
                 books -> {
-                    throw new BookException("Book already registered");
+                    throw new BookNotFoundException("Book already registered");
                 }
         );
 
@@ -41,7 +41,7 @@ public class BookRegistrationService {
     public List<BooksResponseDTO> listAllBooks(){
         List<BooksEntity> books = booksRepository.findAll();
         if(books.isEmpty()){
-            throw new BookException("No books registered");
+            throw new BookNotFoundException("No books registered");
         }else {
             return books.stream()
                     .map(booksResponseMapper::toDTO)
