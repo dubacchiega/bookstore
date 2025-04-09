@@ -1,4 +1,4 @@
 package br.com.dubacchiega.library.users.entities.DTO;
 
-public record LoginResponseDTO() {
+public record LoginResponseDTO(String token) {
 }
