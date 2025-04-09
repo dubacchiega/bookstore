@@ -27,18 +27,22 @@ public class UsersEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "O campo [name] não pode ser nulo")
+//    @NotBlank(message = "O campo [name] não pode ser nulo")
+    @Column(nullable = false)
     private String name;
 
-    @NotBlank(message = "O campo [username] não pode ser nulo")
-    @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaços")
+//    @NotBlank(message = "O campo [username] não pode ser nulo")
+//    @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaços")
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Email(message = "O campo [email] deve conter um e-mail válido")
+//    @Email(message = "O campo [email] deve conter um e-mail válido")
+    @Column(nullable = false)
     private String email;
 
-    @Length(min = 8, max = 100, message = "A senha deve conter entre 8 a 100 caractéres")
-    @NotBlank(message = "O campo [password] não pode ser nulo")
+//    @Length(min = 8, max = 100, message = "A senha deve conter entre 8 a 100 caractéres")
+//    @NotBlank(message = "O campo [password] não pode ser nulo")
+    @Column(nullable = false)
     private String password;
 
     @CreationTimestamp
@@ -71,21 +75,21 @@ public class UsersEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }
