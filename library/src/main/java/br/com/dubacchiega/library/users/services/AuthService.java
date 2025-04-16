@@ -21,7 +21,7 @@ public class AuthService implements UserDetailsService {
         return usersRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Email/password incorrect"));
     }
 
-    public JWTUserData getUser(){
+    public static JWTUserData getUser(){
         return (JWTUserData) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

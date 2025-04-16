@@ -23,8 +23,6 @@ public class UserController {
     private final RentBookService rentBookService;
     private final ListUserBookService listUserBookService;
 
-    // TODO: Refatorar a mensagem de resposta, usando MAP
-
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registration(@RequestBody UserRequestDTO userRequestDTO){
         UserResponseDTO userResponseDTO = userRegistrationService.userRegistration(userRequestDTO);
@@ -35,9 +33,9 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping("/rent/{id}")
-    public ResponseEntity<Map<String, Object>> rent(@PathVariable UUID id, @RequestBody RentBookDTO rentBookDTO){
-        UserRentBookDTO userRentBookDTO = rentBookService.rentBook(id, rentBookDTO);
+    @PatchMapping("/rent")
+    public ResponseEntity<Map<String, Object>> rent(@RequestBody RentBookDTO rentBookDTO){
+        UserRentBookDTO userRentBookDTO = rentBookService.rentBook(rentBookDTO);
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("message: ", "Book rented successfully");
@@ -45,9 +43,9 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/listBook/{id}")
-    public ResponseEntity<Map<String, Object>> listUserBook(@PathVariable UUID id){
-        UserRentBookResponseDTO userRentBookResponseDTO = listUserBookService.listUserBook(id);
+    @GetMapping("/listBook")
+    public ResponseEntity<Map<String, Object>> listUserBook(){
+        UserRentBookResponseDTO userRentBookResponseDTO = listUserBookService.listUserBook();
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("message: ", "Successfully listed books");
@@ -55,9 +53,9 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping("/return/{id}")
-    public ResponseEntity<Map<String, Object>> returnBooks(@PathVariable UUID id, @RequestBody RentBookDTO rentBookDTO){
-        UserRentBookResponseDTO userRentBookResponseDTO = rentBookService.returnBook(id, rentBookDTO);
+    @PatchMapping("/return")
+    public ResponseEntity<Map<String, Object>> returnBooks(@RequestBody RentBookDTO rentBookDTO){
+        UserRentBookResponseDTO userRentBookResponseDTO = rentBookService.returnBook(rentBookDTO);
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("message: ", "Book returned successfully");

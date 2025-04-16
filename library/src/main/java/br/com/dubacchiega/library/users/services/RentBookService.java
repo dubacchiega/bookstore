@@ -6,6 +6,7 @@ import br.com.dubacchiega.library.books.entities.DTO.RentBookDTO;
 import br.com.dubacchiega.library.books.entities.DTO.RentBookResponseDTO;
 import br.com.dubacchiega.library.books.entities.Mappers.BookRentedByUserMapper;
 import br.com.dubacchiega.library.books.repositories.BooksRepository;
+import br.com.dubacchiega.library.config.JWTUserData;
 import br.com.dubacchiega.library.exceptions.*;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookDTO;
 import br.com.dubacchiega.library.users.entities.DTO.UserRentBookResponseDTO;
@@ -30,10 +31,12 @@ public class RentBookService {
     private final BookRentedByUserMapper bookRentedByUserMapper;
     private final UserRentedMoreResponseMapper userRentedMoreResponseMapper;
 
-    public UserRentBookDTO rentBook(UUID userId, RentBookDTO bookDTO){
+    public UserRentBookDTO rentBook(RentBookDTO bookDTO){
+
+        JWTUserData userData = AuthService.getUser();
 
 
-        UsersEntity user = usersRepository.findById(userId).orElseThrow(
+        UsersEntity user = usersRepository.findById(userData.id()).orElseThrow(
                 () -> {throw new UserNotFoundException("User not found");});
 
         BooksEntity book = booksRepository.findByTitle(bookDTO.title()).orElseThrow(
@@ -67,8 +70,11 @@ public class RentBookService {
 
     }
 
-    public UserRentBookResponseDTO returnBook(UUID userId, RentBookDTO title){
-        UsersEntity user = usersRepository.findById(userId).orElseThrow(
+    public UserRentBookResponseDTO returnBook(RentBookDTO title){
+
+        JWTUserData userData = AuthService.getUser();
+
+        UsersEntity user = usersRepository.findById(userData.id()).orElseThrow(
                 () -> {throw new UserNotFoundException("User not found");});
 
         BooksEntity book = booksRepository.findByTitle(title.title()).orElseThrow(
