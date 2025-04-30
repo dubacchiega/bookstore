@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "user/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "user/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "book/register").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/list/all").permitAll()
                         .requestMatchers(HttpMethod.GET, "/list/available").permitAll()
                         .requestMatchers(HttpMethod.GET, "/list/rank").permitAll()

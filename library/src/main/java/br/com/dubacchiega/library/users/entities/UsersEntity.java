@@ -2,6 +2,7 @@ package br.com.dubacchiega.library.users.entities;
 
 import br.com.dubacchiega.library.books.entities.BooksEntity;
 import br.com.dubacchiega.library.users.entities.DTO.UserRequestDTO;
+import br.com.dubacchiega.library.users.entities.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -45,6 +47,9 @@ public class UsersEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -62,15 +67,18 @@ public class UsersEntity implements UserDetails {
         this.username = user.username();
         this.email = user.email();
         this.password = user.password();
+        this.role = user.role();
     }
 
     public void addBooks(BooksEntity booksEntity){
         books.add(booksEntity);
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

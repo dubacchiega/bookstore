@@ -28,10 +28,10 @@ public class BookController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody BooksRequestDTO booksRequestDTO){
         BooksResponseDTO book = bookRegistrationService.register(booksRequestDTO);
-        Map<String, Object> respose = new LinkedHashMap<>();
-        respose.put("message: ", "Book registered successfully");
-        respose.put("data: ", book);
-        return ResponseEntity.ok().body(respose);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("message: ", "Book registered successfully");
+        response.put("data: ", book);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/list/all")

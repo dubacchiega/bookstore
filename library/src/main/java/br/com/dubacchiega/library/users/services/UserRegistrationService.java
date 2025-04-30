@@ -6,6 +6,7 @@ import br.com.dubacchiega.library.users.entities.Mappers.UserRequestMapper;
 import br.com.dubacchiega.library.users.entities.DTO.UserResponseDTO;
 import br.com.dubacchiega.library.users.entities.Mappers.UserResponseMapper;
 import br.com.dubacchiega.library.users.entities.UsersEntity;
+import br.com.dubacchiega.library.users.entities.enums.UserRole;
 import br.com.dubacchiega.library.users.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class UserRegistrationService {
         );
         UsersEntity newUser = userRequestMapper.toEntity(userRequestDTO);
         newUser.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+        if (newUser.getRole() == null) {newUser.setRole(UserRole.USER);}
         usersRepository.save(newUser);
         return userResponseMapper.toDTO(newUser);
     }
