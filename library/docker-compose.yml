@@ -1,0 +1,12 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: bookstoreContainer
+    environment:
+      POSTGRES_DB: bookstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    restart: always
